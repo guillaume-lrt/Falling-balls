@@ -1,0 +1,113 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<!-- <title>ZIM BITS - Physics with Box2D, JavaScript HTML 5 Canvas and CreateJS - Tips, Techniques and Tutorials</title> -->
+
+<script src="https://d309knd7es5f10.cloudfront.net/createjs_1.1_min.js"></script>
+<script src="https://d309knd7es5f10.cloudfront.net/zim_9.4.1.js"></script>
+
+<!-- physics libraries -->
+<script src="https://d309knd7es5f10.cloudfront.net/Box2dWeb-2.1.a.3.min.js"></script>
+<script src="https://d309knd7es5f10.cloudfront.net/physics_0.1.2.js"></script><!-- helper code for box2D -->
+
+<script src="https://zimjs.com/bits/footer9.js"></script><!-- you will not need this -->
+
+<script>
+
+var scaling = "fit"; // this will resize to fit inside the screen dimensions
+var width = 1500;
+var height = 2000;
+var color = dark; // or any HTML color such as "violet" or "#333333"
+var outerColor = light;
+
+var frame = new Frame(scaling, width, height, color, outerColor);
+frame.on("ready", function() {
+	// zog("ready from ZIM Frame");
+
+	var stage = frame.stage;
+	var stageW = frame.width;
+	var stageH = frame.height;
+
+	// 1. make borders for the world
+	// this stops stuff from going off the screen
+	// but also could stop things from falling in through the top of the screen
+	var borders = {x:0, y:0, width:stageW, height:stageH-120};
+
+	// 2. make a new Physics object passing in the ZIM frame and borders
+	// it needs a frame so it can get scale to match the debug canvas
+	var physics = new zim.Physics(frame, borders);
+
+function bars(barW,barH,x_pos,y_pos,rotation){
+	var barBody = physics.makeRectangle(barW, barH, false);
+	barBody.x = x_pos;
+	barBody.y = y_pos;
+	barBody.rotation = rotation;
+	var bar = new Rectangle(barW, barH, frame.silver);
+	bar.centerReg();
+	physics.addMap(barBody, bar);
+}
+
+function balls(x_pos,y_pos,){
+	var circleR = 20;
+	var circleBody = physics.makeCircle({
+		radius:circleR,
+		angular:.75,
+		restitution:.3
+	});
+	circleBody.x = x_pos;
+	circleBody.y = y_pos;
+	var circle = new Circle(circleR, frame.blue).center();
+	circle.cursor = "pointer";
+	physics.addMap(circleBody, circle);
+}
+
+	// MOUSE
+	// 6. set optional mouse dragging
+	// physics.drag([boxBody, triangleBody]); // would not drag circleBody
+	physics.drag();
+
+	// 7. set optional debug canvas showing Box2D shapes
+	// DEBUG
+	// physics.debug();
+	// frame.on("resize", function() {
+	// 	physics.updateDebug();
+	// });
+
+	bars(400,10,470,300,87);
+	bars(400,10,1030,300,93);
+	bars(400,10,580,700,105);
+	bars(400,10,920,700,75);
+
+	bars(400,10,500,1200,90);
+	bars(300,10,350,1395,0);
+	bars(400,10,200,1200,90);
+
+	bars(400,10,900,1200,90);
+	bars(300,10,750,1395,0);
+	bars(400,10,600,1200,90);
+
+	bars(400,10,1300,1200,90);
+	bars(300,10,1150,1395,0);
+	bars(400,10,1000,1200,90);
+
+	// balls(480,10);
+	// balls(1020,10);
+	for (let i = 0; i < 100; i++){
+		var random = Math.random()*(1000 - 490) + 490;
+		balls(random,110);
+	}
+});
+
+</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui" />
+
+</head>
+
+<body>
+<!-- canvas with id="myCanvas" is made by zim Frame -->
+</body>
+</html>
+<!-- © 2016 Dan Zen -->
